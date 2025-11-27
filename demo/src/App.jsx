@@ -1,33 +1,44 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useDebounce } from './myhooks/useDebounce';
+import { useThrottle } from './myhooks/useThrottle';
+import Welcome from './components/Welcome';
+import Users from './components/Users';
+import ValidateUser from './components/ValidateUser';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [debounceCount, setDebounceCount] = useState(0);
+  const [throttleCount, setThrottleCount] = useState(0);
+  const debounceValue = useDebounce(debounceCount,500);
+  const throttleValue = useThrottle(throttleCount,500);
+
+  const increaseCount = ()=>{
+    setCount(count + 1);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <Welcome user="Amit"/>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={increaseCount}>
           count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        </button>        
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="card">
+        <button onClick={() => setDebounceCount(debounceCount + 1)}>
+          Debounce Count is {debounceValue}
+        </button>        
+      </div>
+      <div className="card">
+        <button onClick={() => setThrottleCount(throttleCount + 1)}>
+          Throttle Count is {throttleValue}
+        </button>        
+      </div>
+      <Users/>
+      <ValidateUser/>
+      <AdminDashboard/>
     </>
   )
 }
